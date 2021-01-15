@@ -14,7 +14,8 @@ class MarcaController extends Controller
      */
     public function index()
     {
-        //
+        $marcas=Marca::orderBy('nombre')->paginate(4);
+        return view('marcas.index', compact('marcas'));
     }
 
     /**
@@ -80,6 +81,11 @@ class MarcaController extends Controller
      */
     public function destroy(Marca $marca)
     {
-        //
+        $logoMarca=basename($marca->logo);
+        if($logoMarca!='default.png'){
+            unlink($logoMarca);
+        }
+        $marca->delete();
+        return redirect()->route('marcas.index')->with("mensaje", "Marca Borrada correctamente.");
     }
 }
