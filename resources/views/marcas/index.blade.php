@@ -9,6 +9,7 @@ Marcas Clásicas S.A.
 @if($text=Session::get("mensaje"))
     <p class="bg-secondary text-white p-2 my-3">{{$text}}</p>
 @endif
+<a href="{{route('marcas.create')}}"  class="btn btn-success mb-3"><i class="fa fa-plus"></i> Crear Marca</a>
 <table class="table table-striped table-primary">
     <thead>
       <tr>
@@ -28,6 +29,7 @@ Marcas Clásicas S.A.
             <form name="a" action="{{route('marcas.destroy', $item)}}" method='POST' class="form-inline">
                 @csrf
                 @method("DELETE")
+                <a href="{{route('marcas.edit', $item)}}" class="btn btn-primary btn-lg"><i class="fa fa-edit"></i> Editar</a>
                 <button type="submit" class="btn btn-danger btn-lg" onclick="return confirm('¿Borrar Marca')">
                     <i class="fas fa-trash"></i> Borrar</button>
             </form>
