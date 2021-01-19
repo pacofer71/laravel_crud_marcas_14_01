@@ -78,7 +78,7 @@ class MarcaController extends Controller
      */
     public function show(Marca $marca)
     {
-        //
+        return view('marcas.show', compact('marca'));
     }
 
     /**
@@ -101,7 +101,40 @@ class MarcaController extends Controller
      */
     public function update(Request $request, Marca $marca)
     {
-        //
+        $request->validate([
+            'nombre'=>['required'],
+            'historia'=>['required'],
+            'url'=>['nullable', 'url']
+        ]);
+        //---------------------------------
+        $marca->update([
+        'nombre'=>ucwords($request->nombre),
+        'historia'=>ucfirst($request->historia),
+        'url'=>$request->url
+        ]);
+
+        //vamos con la imagen NO es un campo obligatorio
+        //1.- comprbamos si la he subido
+        if($request->has('logo')){
+            //he subido una imagen
+            //valido que sea un fichero de imagen
+            $request->validate([
+                'logo'=>['image']
+            ]);
+            //si es un fichero de imagen
+            $fileImagen=$request->file('logo');
+            $nombre="img/marcas/".uniqid()."_".$fileImagen->getClientOriginalName();
+            //si he subido una image borro la antigua siempre que no sea default
+            if(basename($marca->logo)!="default.png"){
+                unlink($marca->logo);
+            }
+
+            Storage::Disk("public")->put($nombre, \File::get($fileImagen));
+            $marca->update(['logo'=>"storage/".$nombre]);
+        }
+
+        return redirect()->route('marcas.index')->with('mensaje', "Registro actualizado.");
+
     }
 
     /**

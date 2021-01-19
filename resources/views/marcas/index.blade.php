@@ -22,7 +22,10 @@ Marcas Clásicas S.A.
     <tbody>
         @foreach($marcas as $item)
         <tr style="vertical-align: middle">
-        <th scope="row">#</th>
+        <th scope="row">
+            <a href="{{route('marcas.show', $item)}}" class="btn btn-info btn-lg"><i class="fa fa-info"></i>
+                Detalles</a>
+        </th>
         <td>{{$item->nombre}}</td>
         <td><img src="{{asset($item->logo)}}" width="95rem" height="90rem" class="rounded-circe"></td>
         <td>
